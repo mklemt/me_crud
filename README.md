@@ -1,4 +1,4 @@
-Zadanie
+#Zadanie
 
 Proszę zaprojektować strukturę danych SQL, która będzie przechowywała dane główne obiektu typu numer, data utworzenia i aktualny status oraz historię zdarzeń w formie nazwy statusu i daty jego powstania. 
 
