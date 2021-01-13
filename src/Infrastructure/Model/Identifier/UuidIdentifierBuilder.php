@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Infrastructure\Identifier;
+namespace App\Infrastructure\Model\Identifier;
 
-use App\Domain\Model\Identifier\UUIDFactoryInterface;
+use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use Symfony\Component\Uid\Uuid;
 
-class IdentifierBuilder implements UUIDFactoryInterface
+class UuidIdentifierBuilder implements IdentifierFactoryInterface
 {
     /**
      * @param string $id

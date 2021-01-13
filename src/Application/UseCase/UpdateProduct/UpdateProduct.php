@@ -3,8 +3,9 @@
 
 namespace App\Application\UseCase\UpdateProduct;
 
+use App\Application\CQRS\CommandInterface;
 
-class UpdateProduct
+class UpdateProduct implements CommandInterface
 {
     private string $uuid;
     private string $nazwa;

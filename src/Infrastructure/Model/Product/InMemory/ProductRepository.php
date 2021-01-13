@@ -1,21 +1,21 @@
 <?php
 
 
-namespace App\Infrastructure\Product\InMemory;
+namespace App\Infrastructure\Model\Product\InMemory;
 
 use App\Domain\Model\Identifier\Identifier;
-use App\Domain\Model\Identifier\UUIDFactoryInterface;
+use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
 {
     /**
-     * @var UUIDFactoryInterface
+     * @var IdentifierFactoryInterface
      */
-    private UUIDFactoryInterface $UUIDFactory;
+    private IdentifierFactoryInterface $UUIDFactory;
 
-    public function __construct(UUIDFactoryInterface $UUIDFactory)
+    public function __construct(IdentifierFactoryInterface $UUIDFactory)
     {
         $this->UUIDFactory = $UUIDFactory;
     }

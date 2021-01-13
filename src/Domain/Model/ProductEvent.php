@@ -26,12 +26,20 @@ final class ProductEvent
         foreach ($events as $event) {
             if ( ! $event instanceof ProductEvent) {
                 ProductEventDomainException::objectIsNotValidType();
-                continue;
             }
             $productEvents[] = $event;
         }
 
         return $productEvents;
+    }
+
+    public function toString()
+    {
+        return array(
+            'status'      => $this->status->statusAsString(),
+            'status_date' => $this->eventTime->toString(),
+        );
+
     }
 
 }

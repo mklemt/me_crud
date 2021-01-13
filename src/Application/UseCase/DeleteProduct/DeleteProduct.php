@@ -3,8 +3,9 @@
 
 namespace App\Application\UseCase\DeleteProduct;
 
+use App\Application\CQRS\CommandInterface;
 
-class DeleteProduct
+class DeleteProduct implements CommandInterface
 {
     private string $uuid;
 

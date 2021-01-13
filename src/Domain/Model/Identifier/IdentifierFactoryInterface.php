@@ -4,7 +4,7 @@
 namespace App\Domain\Model\Identifier;
 
 
-interface UUIDFactoryInterface
+interface IdentifierFactoryInterface
 {
     public function isValid(string $id):bool;
 

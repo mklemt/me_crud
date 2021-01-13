@@ -3,8 +3,9 @@
 
 namespace App\Application\UseCase\UpdateEvents;
 
+use App\Application\CQRS\CommandInterface;
 
-class UpdateEvents
+class UpdateEvents implements CommandInterface
 {
     private string $uuid;
     private array $events;

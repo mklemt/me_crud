@@ -3,8 +3,9 @@
 
 namespace App\Application\UseCase\CreateProduct;
 
+use App\Application\CQRS\CommandInterface;
 
-class CreateProduct
+class CreateProduct implements CommandInterface
 {
     private string $nazwa;
 

@@ -54,9 +54,9 @@ final class AppDateTime
         return $toValidate && $toValidate->format($format) === $dateString;
     }
 
-    public function toString()
+    public function toString(): string
     {
-        $this->dateTimeImmutable->format(self::DATE_FORMAT);
+        return $this->dateTimeImmutable->format(self::DATE_FORMAT);
     }
 
 }
