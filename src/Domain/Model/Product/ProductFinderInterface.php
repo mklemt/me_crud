@@ -12,7 +12,7 @@ interface ProductFinderInterface
 
     public function findByIdentifier(string $uuid): ?Product;
 
-    public function findByName(string $name): ?Product;
+    public function findByName(string $name): array;
 
     public function findByLastStatus(int $status): array;
 

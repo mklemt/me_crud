@@ -10,7 +10,7 @@ use App\Domain\Model\ProductEvent;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
 
-final class Product
+class Product
 {
     /**
      * @var Identifier
@@ -22,14 +22,14 @@ final class Product
     private Status $lastStatus;
     private AppDateTime $createdDate;
     private array $events = [];
-    private ProductName $nazwa;
+    private ProductName $name;
 
-    private function __construct(Identifier $productId, ProductName $nazwa, AppDateTime $createdDate, Status $status)
+    private function __construct(Identifier $productId, ProductName $name, AppDateTime $createdDate, Status $status)
     {
         $this->productId   = $productId;
         $this->lastStatus  = $status;
         $this->createdDate = $createdDate;
-        $this->nazwa       = $nazwa;
+        $this->name        = $name;
     }
 
     public static function create(string $uuid, ProductName $nazwa): self
@@ -74,9 +74,24 @@ final class Product
     /**
      * @param ProductName $nazwa
      */
-    public function setNazwa(ProductName $nazwa): void
+    public function setName(ProductName $nazwa): void
     {
-        $this->nazwa = $nazwa;
+        $this->name = $nazwa;
+    }
+
+    public function name()
+    {
+        return $this->name;
+    }
+
+    public function status()
+    {
+        return $this->lastStatus;
+    }
+
+    public function createdTime()
+    {
+        return $this->createdDate;
     }
 
 
@@ -84,9 +99,8 @@ final class Product
     {
         $date           = AppDateTime::now();
         $statusObject   = Status::create($status);
-        $this->events[] = new ProductEvent($statusObject, $date);
+        $this->events[] = new ProductEvent($this->productId, $statusObject, $date);
     }
-
 
 
 }

@@ -3,8 +3,8 @@
 
 namespace App\Infrastructure\CQRS;
 
-use App\Application\Query\QueryBusInterface;
-use App\Application\Query\QueryInterface;
+use App\Application\CQRS\QueryBusInterface;
+use App\Application\CQRS\QueryInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 

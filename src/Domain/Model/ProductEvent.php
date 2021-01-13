@@ -4,17 +4,21 @@
 namespace App\Domain\Model;
 
 use App\Domain\Exception\ProductEventDomainException;
+use App\Domain\Model\Identifier\Identifier;
 
-final class ProductEvent
+class ProductEvent
 {
     const DATE_FORMAT = "Ymdhis";
     private Status $status;
     private AppDateTime $eventTime;
+    private Identifier $productId;
+    private int $id;
 
-    public function __construct(Status $status, AppDateTime $eventTime)
+    public function __construct(Identifier $productId, Status $status, AppDateTime $eventTime)
     {
         $this->status    = $status;
         $this->eventTime = $eventTime;
+        $this->productId = $productId;
     }
 
     public static function buildEventsFromArray(array $events): array
@@ -30,9 +34,17 @@ final class ProductEvent
         return $productEvents;
     }
 
+    public function equal(ProductEvent $productEvent)
+    {
+        return $this->status->equal($productEvent->status) && $this->productId->equal($productEvent->productId) && $this->eventTime->equal(
+                $productEvent->eventTime
+            );
+    }
+
     public function toString()
     {
         return array(
+            'id'          => $this->productId->asString(),
             'status'      => $this->status->statusAsString(),
             'status_date' => $this->eventTime->toString(),
         );

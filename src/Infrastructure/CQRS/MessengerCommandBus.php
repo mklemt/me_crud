@@ -3,11 +3,11 @@
 
 namespace App\Infrastructure\CQRS;
 
-use App\Application\Command\CommandBusInterface;
-use App\Application\Command\CommandInterface;
+use App\Application\CQRS\CommandBusInterface;
+use App\Application\CQRS\CommandInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class MessangerCommandBus implements CommandBusInterface
+class MessengerCommandBus implements CommandBusInterface
 {
     private MessageBusInterface $commandBus;
 

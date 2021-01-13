@@ -8,16 +8,12 @@ use App\Application\CQRS\CommandInterface;
 class UpdateProduct implements CommandInterface
 {
     private string $uuid;
-    private string $nazwa;
-    private string $lastStatus;
-    private string $createdAt;
+    private ?string $name;
+    private ?int $lastStatus;
 
-    public function __construct(string $uuid, string $nazwa, string $lastStatus, string $createdAt)
+    public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-        $this->nazwa = $nazwa;
-        $this->lastStatus = $lastStatus;
-        $this->createdAt = $createdAt;
     }
 
     /**
@@ -29,59 +25,35 @@ class UpdateProduct implements CommandInterface
     }
 
     /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid): void
-    {
-        $this->uuid = $uuid;
-    }
-
-    /**
      * @return string
      */
-    public function getNazwa(): string
+    public function getName(): string
     {
-        return $this->nazwa;
+        return $this->name;
     }
 
     /**
      * @param string $nazwa
      */
-    public function setNazwa(string $nazwa): void
+    public function setName(string $nazwa): void
     {
-        $this->nazwa = $nazwa;
+        $this->name = $nazwa;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getLastStatus(): string
+    public function getLastStatus(): int
     {
         return $this->lastStatus;
     }
 
     /**
-     * @param string $lastStatus
+     * @param int $lastStatus
      */
-    public function setLastStatus(string $lastStatus): void
+    public function setLastStatus(int $lastStatus): void
     {
         $this->lastStatus = $lastStatus;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt(): string
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param string $createdAt
-     */
-    public function setCreatedAt(string $createdAt): void
-    {
-        $this->createdAt = $createdAt;
     }
 
 

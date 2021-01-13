@@ -20,7 +20,7 @@ class ProductFinder implements ProductFinderInterface
         // TODO: Implement findByIdentifier() method.
     }
 
-    public function findByName(string $name): ?Product
+    public function findByName(string $name): array
     {
         // TODO: Implement findByName() method.
     }

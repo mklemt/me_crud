@@ -30,10 +30,10 @@ class ProductTest extends TestCase
         $id   = Identifier::fromString($uuid);
         $name = ProductName::create("Siłownik kategoria I");
 
-        $events[] = new ProductEvent(Status::create(Status::CREATED), AppDateTime::now());
-        $events[] = new ProductEvent(Status::create(Status::UPDATED), AppDateTime::now());
-        $events[] = new ProductEvent(Status::create(Status::WORKING), AppDateTime::now());
-        $events[] = new ProductEvent(Status::create(Status::REMOVED), AppDateTime::now());
+        $events[] = new ProductEvent($id, Status::create(Status::CREATED), AppDateTime::now());
+        $events[] = new ProductEvent($id, Status::create(Status::UPDATED), AppDateTime::now());
+        $events[] = new ProductEvent($id, Status::create(Status::WORKING), AppDateTime::now());
+        $events[] = new ProductEvent($id, Status::create(Status::REMOVED), AppDateTime::now());
 
         $product = Product::build($uuid, $name, Status::UPDATED, AppDateTime::now(), $events);
         $this->assertCount(4, $product->getEvents());

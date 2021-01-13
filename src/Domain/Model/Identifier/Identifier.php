@@ -8,11 +8,11 @@ use Assert\Assertion;
 
 final class Identifier
 {
-    private string $id;
+    private string $uuid;
 
     private function __construct(string $id)
     {
-        $this->id = $id;
+        $this->uuid = $id;
     }
 
     /**
@@ -32,7 +32,7 @@ final class Identifier
      */
     public function asString(): string
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     /**

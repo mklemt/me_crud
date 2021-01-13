@@ -47,7 +47,7 @@ class ProductService
         }
         if ( ! empty($nazwa)) {
             $productName = ProductName::create($nazwa);
-            $product->setNazwa($productName);
+            $product->setName($productName);
         }
 
         return $product;

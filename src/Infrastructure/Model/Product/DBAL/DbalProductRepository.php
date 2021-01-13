@@ -8,7 +8,7 @@ use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductRepositoryInterface;
 
-class ProductRepository implements ProductRepositoryInterface
+class DbalProductRepository implements ProductRepositoryInterface
 {
     /**
      * @var IdentifierFactoryInterface

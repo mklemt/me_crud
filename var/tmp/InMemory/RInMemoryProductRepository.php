@@ -9,7 +9,7 @@ use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductRepositoryInterface;
 use App\Infrastructure\Fixtures\IMemoryFixture;
 
-class ProductRepository implements ProductRepositoryInterface
+class RInMemoryProductRepository implements ProductRepositoryInterface
 {
     private $productsRepository = [];
     /**
@@ -31,6 +31,7 @@ class ProductRepository implements ProductRepositoryInterface
                 return $product;
             }
         }
+        return null;
     }
 
     public function save(Product $product): string

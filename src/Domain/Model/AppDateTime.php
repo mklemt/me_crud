@@ -33,6 +33,11 @@ final class AppDateTime
         return new AppDateTime($dateTime);
     }
 
+    public function equal(AppDateTime $dateTime)
+    {
+        return $this->dateTimeImmutable === $dateTime->dateTimeImmutable;
+    }
+
     public function value()
     {
         return $this->dateTimeImmutable;
