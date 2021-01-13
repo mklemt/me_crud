@@ -11,14 +11,13 @@ use App\Domain\Service\ProductService;
 use App\Infrastructure\CQRS\MessengerCommandBus;
 use App\Infrastructure\Model\Identifier\UuidIdentifierBuilder;
 use App\Infrastructure\Model\Product\DBAL\DbalProductRepository;
-use App\Infrastructure\Model\Product\InMemory\InMemoryProductRepository;
-use App\Infrastructure\Model\Product\InMemory\RInMemoryProductRepository;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Uuid;
 
-class BaseTest extends TestCase
+class BaseTest extends KernelTestCase
 {
     /**
      * @var ProductService
@@ -36,26 +35,30 @@ class BaseTest extends TestCase
      * @var MessengerCommandBus
      */
     protected MessengerCommandBus $commandBus;
+    protected $entityManager;
+    protected $knownProductId;
 
 
     protected function setUp(): void
     {
-        $identifierFactory  = new UuidIdentifierBuilder();
-        $productRepository  = new InMemoryProductRepository($identifierFactory);
-//        $productRepository  = new DbalProductRepository($identifierFactory);
-        $uuid               = $uuid = Uuid::v4()->toRfc4122();
-        $name               = ProductName::create("Telefon");
-        $this->knownProduct = Product::create($uuid, $name);
-        $productRepository->save($this->knownProduct);
 
-        $this->productService    = new ProductService($productRepository);
+        $kernel               = self::bootKernel();
+        $this->knownProductId = 'bfd3293b-19b2-4f17-8b64-40191e27ce65';
+
+        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
+
+        $identifierFactory       = new UuidIdentifierBuilder();
+        $productRepository       = new DbalProductRepository($identifierFactory, $this->entityManager);
         $this->symfonyMessageBus = $this->assembleSymfonyMessageBus();
         $this->commandBus        = new MessengerCommandBus($this->symfonyMessageBus);
 
+        $this->productService = new ProductService($productRepository);
+
     }
+
     public function testUpdateProduct()
     {
-        $updateCommand = new UpdateProduct($this->knownProduct->productId());
+        $updateCommand = new UpdateProduct($this->knownProductId);
         $updateCommand->setName("Nowy telefon");
         $this->commandBus->dispatch($updateCommand);
         self::assertSame($updateCommand, $this->symfonyMessageBus->lastDispatchedCommand());

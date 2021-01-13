@@ -43,11 +43,11 @@ class ProductService
         }
         if ( ! empty($status)) {
             $productStatus = Status::create($status);
-            $product->setLastStatus($productStatus->status());
+            $product->setCurrentStatus($productStatus->status());
         }
         if ( ! empty($nazwa)) {
             $productName = ProductName::create($nazwa);
-            $product->setName($productName);
+            $product->setProductName($productName);
         }
 
         return $product;

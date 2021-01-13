@@ -8,7 +8,7 @@ use App\Application\CQRS\QueryInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class MessangerQueryBus implements QueryBusInterface
+class MessengerQueryBus implements QueryBusInterface
 {
     use HandleTrait {
         handle as handleQuery;

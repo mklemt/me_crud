@@ -4,12 +4,12 @@
 namespace App\Application\UseCase\UpdateProduct;
 
 use App\Application\CQRS\CommandInterface;
+use App\Domain\Model\Status;
 
 class UpdateProduct implements CommandInterface
 {
     private string $uuid;
     private ?string $name;
-    private ?int $lastStatus;
 
     public function __construct(string $uuid)
     {
@@ -27,9 +27,13 @@ class UpdateProduct implements CommandInterface
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
-        return $this->name;
+        if ( ! empty($this->name)) {
+            return $this->name;
+        }
+
+        return null;
     }
 
     /**
@@ -39,22 +43,5 @@ class UpdateProduct implements CommandInterface
     {
         $this->name = $nazwa;
     }
-
-    /**
-     * @return int
-     */
-    public function getLastStatus(): int
-    {
-        return $this->lastStatus;
-    }
-
-    /**
-     * @param int $lastStatus
-     */
-    public function setLastStatus(int $lastStatus): void
-    {
-        $this->lastStatus = $lastStatus;
-    }
-
 
 }

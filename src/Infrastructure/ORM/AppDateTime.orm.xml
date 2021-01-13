@@ -4,10 +4,8 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <embeddable name="App\Domain\Model\AppDateTime">
-        <field name="dateTimeImmutable"
-               column="date_time"
-               type="string"
-               length="50"
+        <field name="dateTime"
+               type="datetime"
                unique="false"
                nullable="false"
         >

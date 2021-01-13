@@ -9,15 +9,15 @@ use App\Domain\Model\Identifier\Identifier;
 class ProductEvent
 {
     const DATE_FORMAT = "Ymdhis";
-    private Status $status;
+    private Status $productStatus;
     private AppDateTime $eventTime;
     private Identifier $productId;
-    private int $id;
+    private int $eventId;
 
     public function __construct(Identifier $productId, Status $status, AppDateTime $eventTime)
     {
-        $this->status    = $status;
-        $this->eventTime = $eventTime;
+        $this->productStatus = $status;
+        $this->eventTime     = $eventTime;
         $this->productId = $productId;
     }
 
@@ -36,7 +36,7 @@ class ProductEvent
 
     public function equal(ProductEvent $productEvent)
     {
-        return $this->status->equal($productEvent->status) && $this->productId->equal($productEvent->productId) && $this->eventTime->equal(
+        return $this->productStatus->equal($productEvent->productStatus) && $this->productId->equal($productEvent->productId) && $this->eventTime->equal(
                 $productEvent->eventTime
             );
     }
@@ -45,7 +45,7 @@ class ProductEvent
     {
         return array(
             'id'          => $this->productId->asString(),
-            'status'      => $this->status->statusAsString(),
+            'status'      => $this->productStatus->statusAsString(),
             'status_date' => $this->eventTime->toString(),
         );
 

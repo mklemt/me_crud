@@ -3,13 +3,12 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\Model\ProductEvent" table="product">
-        <id name="id" type="integer" column="id">
+    <entity name="App\Domain\Model\ProductEvent" table="product_event">
+        <id name="eventId" type="integer" column="eventId">
             <generator strategy="AUTO"/>
-            <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1" />
         </id>
         <embedded name="productId" class="App\Domain\Model\Identifier\Identifier"/>
-        <embedded name="status" class="App\Domain\Model\Status"/>
+        <embedded name="productStatus" class="App\Domain\Model\Status"/>
         <embedded name="eventTime" class="App\Domain\Model\AppDateTime"/>
 
     </entity>

@@ -9,7 +9,7 @@ final class ProductName
 {
     const MIN_LENGTH = 2;
     const MAX_LENGTH = 50;
-    private string $productName;
+    private string $name;
 
     /**
      * ProductName constructor.
@@ -18,7 +18,7 @@ final class ProductName
      */
     private function __construct(string $productName)
     {
-        $this->productName = $productName;
+        $this->name = $productName;
     }
 
     /**
@@ -53,13 +53,13 @@ final class ProductName
     }
 
     /**
-     * @param ProductName $name
+     * @param ProductName $productName
      *
      * @return bool
      */
-    public function equal(ProductName $name): bool
+    public function equal(ProductName $productName): bool
     {
-        return $this->productName === $name->productName;
+        return $this->name === $productName->name;
     }
 
     /**
@@ -67,7 +67,7 @@ final class ProductName
      */
     public function value(): string
     {
-        return $this->productName;
+        return $this->name;
 
     }
 

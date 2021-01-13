@@ -32,7 +32,7 @@ class IMemoryFixture
         $product = Product::create($uuid, $name);
         for ($i = 0; $i < 4; $i++) {
             $rand_key = array_rand($statuses, 1);
-            $product->setLastStatus($statuses[$rand_key]);
+            $product->setCurrentStatus($statuses[$rand_key]);
         }
 
         return $product;

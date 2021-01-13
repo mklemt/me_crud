@@ -4,21 +4,21 @@
 namespace App\Domain\Model;
 
 use App\Domain\Exception\AppDateTimeException;
-use DateTimeImmutable;
+use DateTime;
 
 final class AppDateTime
 {
-    const DATE_FORMAT = "Y-m-d h:i:ss";
-    private DateTimeImmutable $dateTimeImmutable;
+    const DATE_FORMAT = "Y-m-d H:i:s";
+    private DateTime $dateTime;
 
-    private function __construct(DateTimeImmutable $dateTimeImmutable)
+    private function __construct(DateTime $dateTimeImmutable)
     {
-        $this->dateTimeImmutable = $dateTimeImmutable;
+        $this->dateTime = $dateTimeImmutable;
     }
 
     public static function now(): self
     {
-        $dateTimeImmutable = new DateTimeImmutable('now');
+        $dateTimeImmutable = new DateTime('now');
 
         return new self($dateTimeImmutable);
     }
@@ -28,22 +28,22 @@ final class AppDateTime
         if ( ! self::validateDate($dateString, $format)) {
             AppDateTimeException::notValidDateFormatString();
         }
-        $dateTime = DateTimeImmutable::createFromFormat($format, $dateString);
+        $dateTime = DateTime::createFromFormat($format, $dateString);
 
         return new AppDateTime($dateTime);
     }
 
     public function equal(AppDateTime $dateTime)
     {
-        return $this->dateTimeImmutable === $dateTime->dateTimeImmutable;
+        return $this->dateTime === $dateTime->dateTime;
     }
 
     public function value()
     {
-        return $this->dateTimeImmutable;
+        return $this->dateTime;
     }
 
-    public static function create(DateTimeImmutable $dateTime): self
+    public static function create(DateTime $dateTime): self
     {
         if ( ! self::validateDate($dateTime)) {
             AppDateTimeException::notValidDateFormatString();
@@ -54,14 +54,14 @@ final class AppDateTime
 
     public static function validateDate(string $dateString, $format = 'Y-m-d'): bool
     {
-        $toValidate = DateTimeImmutable::createFromFormat($format, $dateString);
+        $toValidate = DateTime::createFromFormat($format, $dateString);
 
         return $toValidate && $toValidate->format($format) === $dateString;
     }
 
     public function toString(): string
     {
-        return $this->dateTimeImmutable->format(self::DATE_FORMAT);
+        return $this->dateTime->format(self::DATE_FORMAT);
     }
 
 }

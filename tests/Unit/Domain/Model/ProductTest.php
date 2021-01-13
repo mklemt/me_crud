@@ -20,7 +20,7 @@ class ProductTest extends TestCase
         $uuid    = Uuid::v4()->toRfc4122();
         $name    = ProductName::create("Siłownik kategoria I");
         $product = Product::create($uuid, $name);
-        $product->setLastStatus(Status::UPDATED);
+        $product->setCurrentStatus(Status::UPDATED);
         $this->assertCount(2, $product->getEvents());
     }
 
@@ -35,7 +35,7 @@ class ProductTest extends TestCase
         $events[] = new ProductEvent($id, Status::create(Status::WORKING), AppDateTime::now());
         $events[] = new ProductEvent($id, Status::create(Status::REMOVED), AppDateTime::now());
 
-        $product = Product::build($uuid, $name, Status::UPDATED, AppDateTime::now(), $events);
+        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now(), $events);
         $this->assertCount(4, $product->getEvents());
     }
 
