@@ -9,6 +9,7 @@ use App\Domain\Model\Product\Product;
 use App\Domain\Model\ProductEvent;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
+use App\Infrastructure\Fixtures\IMemoryFixture;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
 
@@ -29,13 +30,20 @@ class ProductTest extends TestCase
         $id   = Identifier::fromString($uuid);
         $name = ProductName::create("Siłownik kategoria I");
 
-        $events[] = new ProductEvent($id, Status::create(Status::CREATED), AppDateTime::now());
-        $events[] = new ProductEvent($id, Status::create(Status::UPDATED), AppDateTime::now());
-        $events[] = new ProductEvent($id, Status::create(Status::WORKING), AppDateTime::now());
-        $events[] = new ProductEvent($id, Status::create(Status::REMOVED), AppDateTime::now());
+        $events[] = new ProductEvent(Status::create(Status::CREATED), AppDateTime::now());
+        $events[] = new ProductEvent(Status::create(Status::UPDATED), AppDateTime::now());
+        $events[] = new ProductEvent(Status::create(Status::WORKING), AppDateTime::now());
+        $events[] = new ProductEvent(Status::create(Status::REMOVED), AppDateTime::now());
 
         $product = Product::build($uuid, $name, Status::UPDATED, AppDateTime::now(), $events);
         $this->assertCount(4, $product->getEvents());
+    }
+
+    public function testCanCreteProductFromFixtures()
+    {
+        $imemoryFixtures = new IMemoryFixture();
+        $imemoryFixtures->createProducts(10);
+        $this->assertCount(10, $imemoryFixtures->getProducts());
     }
 
 }

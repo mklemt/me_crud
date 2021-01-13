@@ -25,7 +25,7 @@ class ProductRepository implements ProductRepositoryInterface
         // TODO: Implement getById() method.
     }
 
-    public function save(Product $product)
+    public function save(Product $product): string
     {
         // TODO: Implement save() method.
     }
