@@ -5,7 +5,7 @@ namespace App\Infrastructure\Model\Product\DBAL;
 
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductFinderInterface;
-use App\Domain\Model\ProductEvent;
+use App\Domain\Model\ProductEvent\ProductEvent;
 
 class ProductFinder implements ProductFinderInterface
 {

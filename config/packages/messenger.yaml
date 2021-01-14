@@ -18,3 +18,4 @@ framework:
         routing:
             # Route your messages to the transports
             'App\Application\CQRS\CommandInterface': sync
+            'App\Application\CQRS\QueryInterface': sync

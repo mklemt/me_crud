@@ -4,7 +4,6 @@
 namespace App\Application\UseCase\UpdateProduct;
 
 use App\Application\CQRS\CommandInterface;
-use App\Domain\Model\Status;
 
 class UpdateProduct implements CommandInterface
 {

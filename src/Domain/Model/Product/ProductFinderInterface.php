@@ -3,8 +3,7 @@
 
 namespace App\Domain\Model\Product;
 
-
-use App\Domain\Model\ProductEvent;
+use App\Domain\Model\ProductEvent\ProductEvent;
 
 interface ProductFinderInterface
 {

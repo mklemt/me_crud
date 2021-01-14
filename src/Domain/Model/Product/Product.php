@@ -6,7 +6,7 @@ namespace App\Domain\Model\Product;
 use App\Domain\Exception\StatusDomainException;
 use App\Domain\Model\AppDateTime;
 use App\Domain\Model\Identifier\Identifier;
-use App\Domain\Model\ProductEvent;
+use App\Domain\Model\ProductEvent\ProductEvent;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
 

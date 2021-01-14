@@ -3,11 +3,15 @@
 
 namespace App\UI\Controller;
 
+use App\Application\UseCase\CreateProduct\CreateProduct;
+use App\Application\UseCase\ListAllProducts\ListAllProductsQuery;
 use App\Application\UseCase\UpdateProduct\UpdateProduct;
 use App\Infrastructure\CQRS\MessengerCommandBus;
+use App\Infrastructure\CQRS\MessengerQueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * Class APIController
@@ -21,10 +25,15 @@ class APIController extends AbstractController
      * @var MessengerCommandBus
      */
     private MessengerCommandBus $commandBus;
+    /**
+     * @var MessengerQueryBus
+     */
+    private MessengerQueryBus $queryBus;
 
-    public function __construct(MessengerCommandBus $commandBus)
+    public function __construct(MessengerCommandBus $commandBus, MessengerQueryBus $queryBus)
     {
         $this->commandBus = $commandBus;
+        $this->queryBus   = $queryBus;
     }
 
     /**
@@ -44,6 +53,9 @@ class APIController extends AbstractController
      */
     public function index(): Response
     {
+        $query   = new ListAllProductsQuery();
+        $products = $this->queryBus->handle($query);
+
         return $this->json(['id' => 'all']);
     }
 
@@ -60,6 +72,10 @@ class APIController extends AbstractController
      */
     public function add(): Response
     {
-        return $this->json(['id' => 'new']);
+        $uuid          = Uuid::v4()->toRfc4122();
+        $createProduct = new CreateProduct($uuid, "Telefon stacjonarny");
+        $this->commandBus->dispatch($createProduct);
+
+        return $this->json(['id' => $uuid]);
     }
 }

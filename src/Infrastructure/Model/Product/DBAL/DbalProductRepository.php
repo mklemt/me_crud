@@ -7,7 +7,7 @@ use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductRepositoryInterface;
-use App\Domain\Model\ProductEvent;
+use App\Domain\Model\ProductEvent\ProductEvent;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DbalProductRepository implements ProductRepositoryInterface
@@ -45,9 +45,13 @@ class DbalProductRepository implements ProductRepositoryInterface
         return $product->productId();
     }
 
-    public function nextIdentity(): Identifier
+    public function nextIdentity(string $uuid = null): Identifier
     {
-        return Identifier::fromString($this->UUIDFactory->generate());
+        if (empty($uuid)) {
+            return Identifier::fromString($this->UUIDFactory->generate());
+        }
+
+        return Identifier::fromString($uuid);
     }
 
 }

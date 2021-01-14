@@ -1,10 +1,12 @@
 <?php
 
 
-namespace App\Domain\Model;
+namespace App\Domain\Model\ProductEvent;
 
 use App\Domain\Exception\ProductEventDomainException;
+use App\Domain\Model\AppDateTime;
 use App\Domain\Model\Identifier\Identifier;
+use App\Domain\Model\Status;
 
 class ProductEvent
 {

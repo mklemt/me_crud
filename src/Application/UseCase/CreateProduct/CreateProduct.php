@@ -7,27 +7,45 @@ use App\Application\CQRS\CommandInterface;
 
 class CreateProduct implements CommandInterface
 {
-    private string $nazwa;
+    private string $name;
+    private string $uuid;
 
-    public function __construct(string $nazwa)
+    public function __construct(string $uuid, string $name)
     {
-        $this->nazwa = $nazwa;
+        $this->name = $name;
+        $this->uuid = $uuid;
     }
 
     /**
      * @return string
      */
-    public function getNazwa(): string
+    public function getName(): string
     {
-        return $this->nazwa;
+        return $this->name;
     }
 
     /**
-     * @param string $nazwa
+     * @param string $name
      */
-    public function setNazwa(string $nazwa): void
+    public function setName(string $name): void
     {
-        $this->nazwa = $nazwa;
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 
 

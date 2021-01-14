@@ -59,4 +59,14 @@ class ProductService
         $this->productRepository->save($product);
     }
 
+    public function newIdentity(string $uuid = null)
+    {
+        return $this->productRepository->nextIdentity($uuid);
+    }
+
+    public function newUuidString()
+    {
+        return $this->productRepository->nextIdentity()->asString();
+    }
+
 }
