@@ -5,7 +5,7 @@ namespace App\Domain\Model\Product;
 
 use App\Domain\Model\Identifier\Identifier;
 
-interface ProductRepositoryInterface
+interface ProductPersistanceRepositoryInterface
 {
     public function getById(string $uuid): ?Product;
 

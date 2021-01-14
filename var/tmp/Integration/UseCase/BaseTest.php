@@ -10,7 +10,7 @@ use App\Domain\Model\ProductName;
 use App\Domain\Service\ProductService;
 use App\Infrastructure\CQRS\MessengerCommandBus;
 use App\Infrastructure\Model\Identifier\UuidIdentifierBuilder;
-use App\Infrastructure\Model\Product\DBAL\DbalProductRepository;
+use App\Infrastructure\Model\Product\DBAL\DbalProductPersistanceRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -48,7 +48,7 @@ class BaseTest extends KernelTestCase
         $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
 
         $identifierFactory       = new UuidIdentifierBuilder();
-        $productRepository       = new DbalProductRepository($identifierFactory, $this->entityManager);
+        $productRepository       = new DbalProductPersistanceRepository($identifierFactory, $this->entityManager);
         $this->symfonyMessageBus = $this->assembleSymfonyMessageBus();
         $this->commandBus        = new MessengerCommandBus($this->symfonyMessageBus);
 

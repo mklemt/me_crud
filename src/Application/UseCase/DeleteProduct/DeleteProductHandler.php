@@ -4,16 +4,16 @@
 namespace App\Application\UseCase\DeleteProduct;
 
 use App\Application\CQRS\CommandHandlerInterface;
-use App\Domain\Model\Product\ProductRepositoryInterface;
+use App\Domain\Model\Product\ProductPersistanceRepositoryInterface;
 
 class DeleteProductHandler implements CommandHandlerInterface
 {
     /**
-     * @var ProductRepositoryInterface
+     * @var ProductPersistanceRepositoryInterface
      */
-    private ProductRepositoryInterface $productRepository;
+    private ProductPersistanceRepositoryInterface $productRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(ProductPersistanceRepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;
     }

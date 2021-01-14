@@ -6,10 +6,10 @@ namespace App\Infrastructure\Model\Product\InMemory;
 use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductRepositoryInterface;
+use App\Domain\Model\Product\ProductPersistanceRepositoryInterface;
 use App\Infrastructure\Fixtures\IMemoryFixture;
 
-class RInMemoryProductRepository implements ProductRepositoryInterface
+class RInMemoryProductPersistanceRepository implements ProductPersistanceRepositoryInterface
 {
     private $productsRepository = [];
     /**

@@ -5,16 +5,16 @@ namespace App\Application\UseCase\ListAllProducts;
 
 use App\Application\CQRS\QueryHandlerInterface;
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductFinderInterface;
+use App\Domain\Model\Product\ProductQueryRepositoryInterface;
 
 class ListAllProductsHandler implements QueryHandlerInterface
 {
     /**
-     * @var ProductFinderInterface
+     * @var ProductQueryRepositoryInterface
      */
-    private ProductFinderInterface $productFinder;
+    private ProductQueryRepositoryInterface $productFinder;
 
-    public function __construct(ProductFinderInterface $productFinder)
+    public function __construct(ProductQueryRepositoryInterface $productFinder)
     {
         $this->productFinder = $productFinder;
     }

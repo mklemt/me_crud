@@ -5,7 +5,7 @@ namespace App\Domain\Model\Product;
 
 use App\Domain\Model\ProductEvent\ProductEvent;
 
-interface ProductFinderInterface
+interface ProductQueryRepositoryInterface
 {
     public function findAll(): array;
 

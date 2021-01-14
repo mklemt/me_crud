@@ -6,12 +6,11 @@ namespace App\Infrastructure\Model\Product\DBAL;
 use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductRepositoryInterface;
-use App\Domain\Model\Status;
+use App\Domain\Model\Product\ProductPersistanceRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class DbalProductRepository implements ProductRepositoryInterface
+class DbalProductPersistanceRepository implements ProductPersistanceRepositoryInterface
 {
     /**
      * @var IdentifierFactoryInterface

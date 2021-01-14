@@ -5,20 +5,20 @@ namespace App\Domain\Service;
 
 use App\Domain\Exception\ProductDomainException;
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductFinderInterface;
-use App\Domain\Model\Product\ProductRepositoryInterface;
+use App\Domain\Model\Product\ProductQueryRepositoryInterface;
+use App\Domain\Model\Product\ProductPersistanceRepositoryInterface;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
 
 class ProductService
 {
-    private ProductRepositoryInterface $productRepository;
+    private ProductPersistanceRepositoryInterface $productRepository;
     /**
-     * @var ProductFinderInterface
+     * @var ProductQueryRepositoryInterface
      */
-    private ProductFinderInterface $productFinder;
+    private ProductQueryRepositoryInterface $productFinder;
 
-    public function __construct(ProductRepositoryInterface $productRepository, ProductFinderInterface $productFinder)
+    public function __construct(ProductPersistanceRepositoryInterface $productRepository, ProductQueryRepositoryInterface $productFinder)
     {
         $this->productRepository = $productRepository;
         $this->productFinder     = $productFinder;

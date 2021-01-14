@@ -4,12 +4,12 @@
 namespace App\Infrastructure\Model\Product\DBAL;
 
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductFinderInterface;
+use App\Domain\Model\Product\ProductQueryRepositoryInterface;
 use App\Domain\Model\ProductEvent\ProductEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
-class ProductFinder implements ProductFinderInterface
+class ProductQueryRepository implements ProductQueryRepositoryInterface
 {
     /**
      * @var EntityManagerInterface

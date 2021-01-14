@@ -5,13 +5,13 @@ namespace App\Infrastructure\Model\Product\InMemory;
 
 use App\Domain\Model\AppDateTime;
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductFinderInterface;
+use App\Domain\Model\Product\ProductQueryRepositoryInterface;
 use App\Domain\Model\ProductEvent;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
 use App\Infrastructure\Fixtures\IMemoryFixture;
 
-class ProductFinder implements ProductFinderInterface
+class ProductQueryRepository implements ProductQueryRepositoryInterface
 {
     private array $productsRepository;
 

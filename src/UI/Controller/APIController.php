@@ -4,6 +4,7 @@
 namespace App\UI\Controller;
 
 use App\Application\UseCase\CreateProduct\CreateProduct;
+use App\Application\UseCase\FilterProduct\FilterProductQuery;
 use App\Application\UseCase\ListAllProducts\ListAllProductsQuery;
 use App\Application\UseCase\ListEvents\ListEventsQuery;
 use App\Application\UseCase\UpdateProduct\UpdateProduct;
@@ -65,9 +66,16 @@ class APIController extends AbstractController
     /**
      * @Route("/{id}", methods={"GET"}, name="filter")
      */
-    public function filter(string $id): Response
+    public function filter(string $id, Request $request): Response
     {
-        return $this->json(['id' => $id]);
+        $products = [];
+        $data     = json_decode($request->getContent(), true);
+        if (is_array($data)) {
+            $query    = new FilterProductQuery($data);
+            $products = $this->queryBus->handle($query);
+        }
+
+        return $this->json(['products' => $products]);
     }
 
     /**
