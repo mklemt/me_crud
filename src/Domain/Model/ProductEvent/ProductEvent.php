@@ -65,4 +65,10 @@ class ProductEvent
 
     }
 
+    public function productId()
+    {
+        return $this->productId;
+
+    }
+
 }

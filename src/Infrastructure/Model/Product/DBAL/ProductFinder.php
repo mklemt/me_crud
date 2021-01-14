@@ -60,7 +60,8 @@ class ProductFinder implements ProductFinderInterface
 
     public function findByEvent(ProductEvent $productEvent): array
     {
-        // TODO: Implement findByEvent() method.
+        $product = $this->productRepository->find($productEvent->productId());
+        $this->hydrateEvents($product);
     }
 
     /**

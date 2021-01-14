@@ -10,6 +10,7 @@ use App\Application\UseCase\UpdateProduct\UpdateProduct;
 use App\Infrastructure\CQRS\MessengerCommandBus;
 use App\Infrastructure\CQRS\MessengerQueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
@@ -40,10 +41,11 @@ class APIController extends AbstractController
     /**
      * @Route("/{id}", methods={"PUT"}, name="edit")
      */
-    public function edit(string $id): Response
+    public function edit(string $id, Request $request): Response
     {
+        $data          = json_decode($request->getContent(), true);
         $updateCommand = new UpdateProduct($id);
-        $updateCommand->setName("Nowy telefon");
+        $updateCommand->setName($data['name']);
         $this->commandBus->dispatch($updateCommand);
 
         return $this->json(['id' => $id]);
@@ -73,7 +75,7 @@ class APIController extends AbstractController
      */
     public function events(string $id): Response
     {
-        $query    = new ListEventsQuery($id);
+        $query   = new ListEventsQuery($id);
         $product = $this->queryBus->handle($query);
 
         return $this->json(['products' => $product]);
@@ -82,10 +84,11 @@ class APIController extends AbstractController
     /**
      * @Route("/", methods={"POST"}, name="add")
      */
-    public function add(): Response
+    public function add(Request $request): Response
     {
+        $data          = json_decode($request->getContent(), true);
         $uuid          = Uuid::v4()->toRfc4122();
-        $createProduct = new CreateProduct($uuid, "Telefon stacjonarny");
+        $createProduct = new CreateProduct($uuid, $data['name']);
         $this->commandBus->dispatch($createProduct);
 
         return $this->json(['id' => $uuid]);
