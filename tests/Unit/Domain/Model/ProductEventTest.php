@@ -18,8 +18,8 @@ class ProductEventTest extends TestCase
         $id   = Identifier::fromString($uuid);
         $date = AppDateTime::now();
 
-        $event1 = new ProductEvent($id, Status::create(Status::CREATED), $date);
-        $event2 = new ProductEvent($id, Status::create(Status::CREATED), $date);
+        $event1 = new ProductEvent($id->asString(), Status::create(Status::CREATED), $date);
+        $event2 = new ProductEvent($id->asString(), Status::create(Status::CREATED), $date);
         $this->assertTrue($event1->equal($event2));
     }
 
