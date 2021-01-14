@@ -30,9 +30,9 @@ class UpdateProductHandler implements CommandHandlerInterface
         }
         if ( ! empty($command->getName())) {
             $productName = ProductName::create($command->getName());
-            $product->setProductName($productName);
+            $product->setName($productName);
         }
-        $product->setCurrentStatus(Status::UPDATED);
+        $product->setStatus(Status::UPDATED);
         $this->productService->save($product);
 
     }

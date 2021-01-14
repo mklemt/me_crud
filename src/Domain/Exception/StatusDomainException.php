@@ -20,4 +20,11 @@ class StatusDomainException extends Exception
 
         throw new self($message);
     }
+
+    public static function productAlreadyWasRemoved()
+    {
+        $message = sprintf("Produkt został usunięty, nie można zmienić jego statusu");
+
+        throw new self($message);
+    }
 }

@@ -20,8 +20,8 @@ class ProductTest extends TestCase
         $uuid    = Uuid::v4()->toRfc4122();
         $name    = ProductName::create("Siłownik kategoria I");
         $product = Product::create($uuid, $name);
-        $product->setCurrentStatus(Status::UPDATED);
-        $this->assertCount(2, $product->getEvents());
+        $product->setStatus(Status::UPDATED);
+        $this->assertCount(2, $product->events());
     }
 
     public function testCanBuildProduct()
@@ -31,10 +31,10 @@ class ProductTest extends TestCase
         $name = ProductName::create("Siłownik kategoria I");
 
         $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
-        $product->setCurrentStatus(Status::UPDATED);
-        $product->setCurrentStatus(Status::WORKING);
-        $product->setCurrentStatus(Status::REMOVED);
-        $this->assertCount(3, $product->getEvents());
+        $product->setStatus(Status::UPDATED);
+        $product->setStatus(Status::WORKING);
+        $product->setStatus(Status::REMOVED);
+        $this->assertCount(3, $product->events());
     }
 
     public function testIfICanAddEventsToProduct()
@@ -44,9 +44,9 @@ class ProductTest extends TestCase
         $name = ProductName::create("Siłownik kategoria I");
 
         $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
-        $product->setCurrentStatus(Status::UPDATED);
-        $product->setCurrentStatus(Status::WORKING);
-        $product->setCurrentStatus(Status::REMOVED);
+        $product->setStatus(Status::UPDATED);
+        $product->setStatus(Status::WORKING);
+        $product->setStatus(Status::REMOVED);
 
         $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
         $this->assertNotEmpty($product);

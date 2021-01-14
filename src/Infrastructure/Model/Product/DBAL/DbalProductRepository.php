@@ -7,6 +7,7 @@ use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductRepositoryInterface;
+use App\Domain\Model\Status;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -40,7 +41,7 @@ class DbalProductRepository implements ProductRepositoryInterface
         try {
             $this->entityManager->beginTransaction();
             $this->entityManager->persist($product);
-            foreach ($product->getEvents() as $productEvent) {
+            foreach ($product->events() as $productEvent) {
                 $this->entityManager->persist($productEvent);
             }
             $this->entityManager->flush();
@@ -50,7 +51,7 @@ class DbalProductRepository implements ProductRepositoryInterface
         }
 
 
-        return $product->productId();
+        return $product->id();
     }
 
     public function nextIdentity(string $uuid = null): Identifier
@@ -62,4 +63,24 @@ class DbalProductRepository implements ProductRepositoryInterface
         return Identifier::fromString($uuid);
     }
 
+    public function delete(string $uuid): string
+    {
+        try {
+            $this->entityManager->beginTransaction();
+            /** @var Product $product */
+            $product = $this->entityManager->getRepository(Product::class)->find($uuid);
+            $product->remove();
+            $this->entityManager->persist($product);
+            foreach ($product->events() as $productEvent) {
+                $this->entityManager->persist($productEvent);
+            }
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch (Exception $exception) {
+            $this->entityManager->rollback();
+        }
+
+
+        return $product->id();
+    }
 }

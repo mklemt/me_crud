@@ -33,51 +33,62 @@ class Product
         $this->events        = [];
     }
 
+    /**
+     * @param string $uuid
+     * @param ProductName $nazwa
+     *
+     * @return static
+     * Create new Object
+     */
     public static function create(string $uuid, ProductName $nazwa): self
     {
-        $idObject     = Identifier::fromString($uuid);
-        $statusObject = Status::create(Status::CREATED);
-        $product      = new self($idObject, $nazwa, AppDateTime::now(), $statusObject);
+        $identifier = Identifier::fromString($uuid);
+        $status     = Status::create(Status::CREATED);
+        $product    = new self($identifier, $nazwa, AppDateTime::now(), $status);
         $product->addEvent(Status::CREATED);
 
         return $product;
     }
 
+    /**
+     * @param Identifier $uuid
+     * @param ProductName $nazwa
+     * @param Status $lastStatus
+     * @param AppDateTime $createdDate
+     *
+     * @return static
+     *
+     * Hydronize Product
+     */
     public static function build(Identifier $uuid, ProductName $nazwa, Status $lastStatus, AppDateTime $createdDate): self
     {
-        $product = new self($uuid, $nazwa, $createdDate, $lastStatus);
-
-        return $product;
+        return new self($uuid, $nazwa, $createdDate, $lastStatus);
     }
 
-
-    public function setCurrentStatus(int $currentStatus)
+    public function remove()
     {
+        $this->setStatus(Status::REMOVED);
+    }
+
+    public function setStatus(int $currentStatus)
+    {
+        $this->checkIfIsRemoved();
         if ($currentStatus == STATUS::CREATED) {
             StatusDomainException::productAlreadyHasCreatedStatus();
         }
+
         $this->currentStatus = Status::create($currentStatus);
         $this->addEvent($currentStatus);
     }
 
-    public function productId(): string
+    public function id(): string
     {
         return $this->productId->asString();
-
     }
 
-
-    public function getEvents(): array
+    public function events(): array
     {
         return $this->events;
-    }
-
-    /**
-     * @param ProductName $nazwa
-     */
-    public function setProductName(ProductName $nazwa): void
-    {
-        $this->productName = $nazwa;
     }
 
     public function name()
@@ -95,6 +106,33 @@ class Product
         return $this->createdDate;
     }
 
+    /**
+     * @param ProductName $nazwa
+     */
+    public function setName(ProductName $nazwa): void
+    {
+        $this->checkIfIsRemoved();
+        $this->productName = $nazwa;
+    }
+
+    public function addEvents($events)
+    {
+        $this->checkIfIsRemoved();
+        $this->events = ProductEvent::buildEventsFromArray($events);
+    }
+
+    public function toArray()
+    {
+        $list = [
+            'productId'     => $this->id(),
+            'productName'   => $this->productName->value(),
+            'currentStatus' => $this->currentStatus->statusAsString(),
+            'createdDate'   => $this->createdTime()->toString(),
+            'events'        => ProductEvent::convertEventsToArray($this->events()),
+        ];
+
+        return $list;
+    }
 
     private function addEvent(int $status)
     {
@@ -103,25 +141,10 @@ class Product
         $this->events[] = new ProductEvent($this->productId->asString(), $statusObject, $date);
     }
 
-    public function setEvents($events)
+    private function checkIfIsRemoved(): void
     {
-        $this->events = ProductEvent::buildEventsFromArray($events);
+        if ($this->status()->equal(Status::create(STATUS::REMOVED))) {
+            StatusDomainException::productAlreadyWasRemoved();
+        }
     }
-
-    public function toArray()
-    {
-
-        $list = [
-            'productId'     => $this->productId(),
-            'productName'   => $this->productName->value(),
-            'currentStatus' => $this->currentStatus->statusAsString(),
-            'createdDate'   => $this->createdTime()->toString(),
-            'events'        => ProductEvent::convertEventsToArray($this->getEvents()),
-        ];
-
-        return $list;
-
-    }
-
-
 }

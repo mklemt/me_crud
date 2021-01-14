@@ -70,7 +70,7 @@ class ProductFinder implements ProductFinderInterface
      */
     private function hydrateEvents(Product $product): void
     {
-        $events = $this->eventsRepository->findBy(["productId" => $product->productId()]);
-        $product->setEvents($events);
+        $events = $this->eventsRepository->findBy(["productId" => $product->id()]);
+        $product->addEvents($events);
     }
 }

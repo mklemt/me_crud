@@ -27,7 +27,7 @@ class RInMemoryProductRepository implements ProductRepositoryInterface
     {
         /** @var Product $product */
         foreach ($this->productsRepository as $product) {
-            if ($product->productId() == $uuid) {
+            if ($product->id() == $uuid) {
                 return $product;
             }
         }
@@ -39,16 +39,16 @@ class RInMemoryProductRepository implements ProductRepositoryInterface
         $i = 0;
         /** @var Product $pr */
         foreach ($this->productsRepository as $pr) {
-            if ($pr->productId() == $product->productId()) {
+            if ($pr->id() == $product->id()) {
                 $this->productsRepository[$i] = $product;
 
-                return $pr->productId();
+                return $pr->id();
             }
             $i++;
         }
         $this->productsRepository[] = $product;
 
-        return $product->productId();
+        return $product->id();
     }
 
     public function nextIdentity(): Identifier

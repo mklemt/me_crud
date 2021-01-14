@@ -29,7 +29,7 @@ class ProductFinder implements ProductFinderInterface
     {
         /** @var Product $product */
         foreach ($this->productsRepository as $product) {
-            if ($product->productId() == $uuid) {
+            if ($product->id() == $uuid) {
                 return $product;
             }
         }

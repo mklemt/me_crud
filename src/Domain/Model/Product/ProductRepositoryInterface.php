@@ -11,5 +11,7 @@ interface ProductRepositoryInterface
 
     public function save(Product $product): string;
 
+    public function delete(string $uuid): string;
+
     public function nextIdentity(string $uuid = null): Identifier;
 }
