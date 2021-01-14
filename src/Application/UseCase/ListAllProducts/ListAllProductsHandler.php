@@ -4,24 +4,31 @@
 namespace App\Application\UseCase\ListAllProducts;
 
 use App\Application\CQRS\QueryHandlerInterface;
-use App\Domain\Service\ProductService;
+use App\Domain\Model\Product\Product;
+use App\Domain\Model\Product\ProductFinderInterface;
 
 class ListAllProductsHandler implements QueryHandlerInterface
 {
     /**
-     * @var ProductService
+     * @var ProductFinderInterface
      */
-    private ProductService $productService;
+    private ProductFinderInterface $productFinder;
 
-    public function __construct(ProductService $productService)
+    public function __construct(ProductFinderInterface $productFinder)
     {
-        $this->productService = $productService;
+        $this->productFinder = $productFinder;
     }
 
     public function __invoke(ListAllProductsQuery $query)
     {
-        $products = $this->productService->findAll();
-        return $products;
+        $products = $this->productFinder->findAll();
+        /** @var Product $product */
+        foreach ($products as $product) {
+            $result[] = $product->toArray();
+        }
+
+        return $result;
+
     }
 
 }

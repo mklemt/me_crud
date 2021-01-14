@@ -31,14 +31,12 @@ class DbalProductRepository implements ProductRepositoryInterface
     {
         /** @var Product $product */
         $product       = $this->entityManager->getRepository(Product::class)->find($uuid);
-        $productEvents = $this->entityManager->getRepository(ProductEvent::class)->findBy(['productId.uuid' => $uuid]);
-        $product->setEvents($productEvents);
-
         return $product;
     }
 
     public function save(Product $product): string
     {
+//        dd($product);
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 

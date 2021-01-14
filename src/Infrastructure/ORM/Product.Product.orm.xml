@@ -8,7 +8,11 @@
         <embedded name="productName" class="App\Domain\Model\ProductName"/>
         <embedded name="createdDate" class="App\Domain\Model\AppDateTime"/>
         <embedded name="currentStatus" class="App\Domain\Model\Status"/>
-        <one-to-many field="events" target-entity="App\Domain\Model\ProductEvent\ProductEvent" mapped-by="product" />
+        <one-to-many field="events" target-entity="App\Domain\Model\ProductEvent\ProductEvent" mapped-by="product" >
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>

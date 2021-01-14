@@ -75,15 +75,4 @@ class ProductService
         return $this->productRepository->nextIdentity()->asString();
     }
 
-    public function findAll()
-    {
-        $products = $this->productFinder->findAll();
-        /** @var Product $product */
-        foreach ($products as $product) {
-            $result[] = $product->toArray();
-        }
-        return $result;
-
-    }
-
 }

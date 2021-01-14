@@ -68,6 +68,14 @@ class APIController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/events", methods={"GET"}, name="events")
+     */
+    public function events(string $id): Response
+    {
+        return $this->json(['id' => $id]);
+    }
+
+    /**
      * @Route("/", methods={"POST"}, name="add")
      */
     public function add(): Response

@@ -103,7 +103,7 @@ class Product
     {
         $date           = AppDateTime::now();
         $statusObject   = Status::create($status);
-        $this->events[] = new ProductEvent($this->productId, $statusObject, $date);
+        $this->events[] = new ProductEvent($this->productId->asString(), $statusObject, $date);
     }
 
     public function setEvents(array $productEvents)

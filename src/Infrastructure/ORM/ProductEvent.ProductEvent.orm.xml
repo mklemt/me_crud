@@ -5,14 +5,15 @@
 
     <entity name="App\Domain\Model\ProductEvent\ProductEvent" table="product_event">
         <id name="eventId" type="integer" column="eventId">
-            <generator strategy="AUTO"/>
+            <generator strategy="IDENTITY"/>
         </id>
-        <embedded name="productId" class="App\Domain\Model\Identifier\Identifier"/>
+
+        <field name="productId" type="string" unique="false" length="100" column="product_id"/>
         <embedded name="productStatus" class="App\Domain\Model\Status"/>
         <embedded name="eventTime" class="App\Domain\Model\AppDateTime"/>
 
         <many-to-one field="product" target-entity="App\Domain\Model\Product\Product" inversed-by="events">
-            <join-column name="product_id" referenced-column-name="productId_uuid" />
+            <join-column name="productId_uuid" referenced-column-name="productId_uuid" unique="false"/>
         </many-to-one>
 
     </entity>

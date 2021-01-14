@@ -14,11 +14,11 @@ class ProductEvent
     const DATE_FORMAT = "Ymdhis";
     private Status $productStatus;
     private AppDateTime $eventTime;
-    private Identifier $productId;
+    private string $productId;
     private Product $product;
     private int $eventId;
 
-    public function __construct(Identifier $productId, Status $status, AppDateTime $eventTime)
+    public function __construct(string $productId, Status $status, AppDateTime $eventTime)
     {
         $this->productStatus = $status;
         $this->eventTime     = $eventTime;
@@ -40,9 +40,9 @@ class ProductEvent
 
     public function equal(ProductEvent $productEvent)
     {
-        return $this->productStatus->equal($productEvent->productStatus) && $this->productId->equal(
-                $productEvent->productId
-            ) && $this->eventTime->equal(
+        return $this->productStatus->equal(
+                $productEvent->productStatus
+            ) && $this->productId == $productEvent->productId && $this->eventTime->equal(
                 $productEvent->eventTime
             );
     }
@@ -50,7 +50,7 @@ class ProductEvent
     public function toString()
     {
         return array(
-            'id'          => $this->productId->asString(),
+            'id'          => $this->productId,
             'status'      => $this->productStatus->statusAsString(),
             'status_date' => $this->eventTime->toString(),
         );
