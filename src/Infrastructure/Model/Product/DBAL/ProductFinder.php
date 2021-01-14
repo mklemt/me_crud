@@ -6,13 +6,27 @@ namespace App\Infrastructure\Model\Product\DBAL;
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductFinderInterface;
 use App\Domain\Model\ProductEvent\ProductEvent;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ProductFinder implements ProductFinderInterface
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     public function findAll(): array
     {
-        // TODO: Implement findAll() method.
+        $productRepository = $this->entityManager->getRepository(Product::class);
+        $products          = $productRepository->findAll();
+
+        return $products;
+
     }
 
     public function findByIdentifier(string $uuid): ?Product

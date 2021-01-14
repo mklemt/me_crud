@@ -5,6 +5,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Exception\ProductDomainException;
 use App\Domain\Model\Product\Product;
+use App\Domain\Model\Product\ProductFinderInterface;
 use App\Domain\Model\Product\ProductRepositoryInterface;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
@@ -12,10 +13,15 @@ use App\Domain\Model\Status;
 class ProductService
 {
     private ProductRepositoryInterface $productRepository;
+    /**
+     * @var ProductFinderInterface
+     */
+    private ProductFinderInterface $productFinder;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(ProductRepositoryInterface $productRepository, ProductFinderInterface $productFinder)
     {
         $this->productRepository = $productRepository;
+        $this->productFinder     = $productFinder;
     }
 
     public function createProduct(string $nazwa): Product
@@ -67,6 +73,17 @@ class ProductService
     public function newUuidString()
     {
         return $this->productRepository->nextIdentity()->asString();
+    }
+
+    public function findAll()
+    {
+        $products = $this->productFinder->findAll();
+        /** @var Product $product */
+        foreach ($products as $product) {
+            $result[] = $product->toArray();
+        }
+        return $result;
+
     }
 
 }

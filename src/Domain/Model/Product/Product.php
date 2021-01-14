@@ -9,6 +9,8 @@ use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\ProductEvent\ProductEvent;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Product
 {
@@ -21,7 +23,7 @@ class Product
      */
     private Status $currentStatus;
     private AppDateTime $createdDate;
-    private array $events = [];
+    private Collection $events;
     private ProductName $productName;
 
     private function __construct(Identifier $productId, ProductName $name, AppDateTime $createdDate, Status $status)
@@ -30,6 +32,7 @@ class Product
         $this->currentStatus = $status;
         $this->createdDate   = $createdDate;
         $this->productName   = $name;
+        $this->events        = new ArrayCollection();
     }
 
     public static function create(string $uuid, ProductName $nazwa): self
@@ -42,10 +45,11 @@ class Product
         return $product;
     }
 
-    public static function build(Identifier $uuid, ProductName $nazwa, Status $lastStatus, AppDateTime $createdDate, array $events): self
+    public static function build(Identifier $uuid, ProductName $nazwa, Status $lastStatus, AppDateTime $createdDate): self
     {
-        $product         = new self($uuid, $nazwa, $createdDate, $lastStatus);
-        $product->events = ProductEvent::buildEventsFromArray($events);
+        $product = new self($uuid, $nazwa, $createdDate, $lastStatus);
+
+//        $product->events = ProductEvent::buildEventsFromArray($events);
 
         return $product;
     }
@@ -66,7 +70,7 @@ class Product
     }
 
 
-    public function getEvents(): array
+    public function getEvents(): Collection
     {
         return $this->events;
     }
@@ -104,7 +108,20 @@ class Product
 
     public function setEvents(array $productEvents)
     {
-        $this->events = ProductEvent::buildEventsFromArray($productEvents);
+//        $this->events = ProductEvent::buildEventsFromArray($productEvents);
+    }
+
+    public function toArray()
+    {
+
+        return [
+            'productId'     => $this->productId(),
+            'productName'   => $this->productName->value(),
+            'currentStatus' => $this->currentStatus->statusAsString(),
+            'createdDate'   => $this->createdTime()->toString(),
+            'events'        => $this->getEvents(),
+        ];
+
     }
 
 

@@ -11,5 +11,9 @@
         <embedded name="productStatus" class="App\Domain\Model\Status"/>
         <embedded name="eventTime" class="App\Domain\Model\AppDateTime"/>
 
+        <many-to-one field="product" target-entity="App\Domain\Model\Product\Product" inversed-by="events">
+            <join-column name="product_id" referenced-column-name="productId_uuid" />
+        </many-to-one>
+
     </entity>
 </doctrine-mapping>

@@ -56,7 +56,7 @@ class APIController extends AbstractController
         $query   = new ListAllProductsQuery();
         $products = $this->queryBus->handle($query);
 
-        return $this->json(['id' => 'all']);
+        return $this->json(['products' => $products]);
     }
 
     /**

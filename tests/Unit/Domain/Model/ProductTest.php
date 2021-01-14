@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Domain\Model;
 use App\Domain\Model\AppDateTime;
 use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\ProductEvent;
+use App\Domain\Model\ProductEvent\ProductEvent;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
 use App\Infrastructure\Fixtures\IMemoryFixture;
@@ -35,7 +35,7 @@ class ProductTest extends TestCase
         $events[] = new ProductEvent($id, Status::create(Status::WORKING), AppDateTime::now());
         $events[] = new ProductEvent($id, Status::create(Status::REMOVED), AppDateTime::now());
 
-        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now(), $events);
+        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
         $this->assertCount(4, $product->getEvents());
     }
 

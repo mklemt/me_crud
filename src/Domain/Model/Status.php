@@ -45,6 +45,7 @@ final class Status
 
     public function statusAsString()
     {
+        self::translateStatuses();
         return self::$statuses[$this->status];
     }
 

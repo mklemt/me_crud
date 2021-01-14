@@ -6,6 +6,7 @@ namespace App\Domain\Model\ProductEvent;
 use App\Domain\Exception\ProductEventDomainException;
 use App\Domain\Model\AppDateTime;
 use App\Domain\Model\Identifier\Identifier;
+use App\Domain\Model\Product\Product;
 use App\Domain\Model\Status;
 
 class ProductEvent
@@ -14,13 +15,14 @@ class ProductEvent
     private Status $productStatus;
     private AppDateTime $eventTime;
     private Identifier $productId;
+    private Product $product;
     private int $eventId;
 
     public function __construct(Identifier $productId, Status $status, AppDateTime $eventTime)
     {
         $this->productStatus = $status;
         $this->eventTime     = $eventTime;
-        $this->productId = $productId;
+        $this->productId     = $productId;
     }
 
     public static function buildEventsFromArray(array $events): array
@@ -38,7 +40,9 @@ class ProductEvent
 
     public function equal(ProductEvent $productEvent)
     {
-        return $this->productStatus->equal($productEvent->productStatus) && $this->productId->equal($productEvent->productId) && $this->eventTime->equal(
+        return $this->productStatus->equal($productEvent->productStatus) && $this->productId->equal(
+                $productEvent->productId
+            ) && $this->eventTime->equal(
                 $productEvent->eventTime
             );
     }
