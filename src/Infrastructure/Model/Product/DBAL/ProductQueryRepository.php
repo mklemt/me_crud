@@ -3,6 +3,7 @@
 
 namespace App\Infrastructure\Model\Product\DBAL;
 
+use App\Application\Service\ApplicationService;
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductQueryRepositoryInterface;
 use App\Domain\Model\ProductEvent\ProductEvent;
@@ -61,6 +62,7 @@ class ProductQueryRepository implements ProductQueryRepositoryInterface
     public function findByEvent(ProductEvent $productEvent): array
     {
         $product = $this->productRepository->find($productEvent->productId());
+
         $this->hydrateEvents($product);
     }
 
@@ -70,7 +72,7 @@ class ProductQueryRepository implements ProductQueryRepositoryInterface
      */
     private function hydrateEvents(Product $product): void
     {
-        $events = $this->eventsRepository->findBy(["productId" => $product->id()]);
-        $product->addEvents($events);
+        $events  = $this->eventsRepository->findBy(["productId" => $product->id()]);
+        ApplicationService::hydrateEvents($product, $events);
     }
 }

@@ -10,6 +10,8 @@ use App\Application\UseCase\ListEvents\ListEventsQuery;
 use App\Application\UseCase\UpdateProduct\UpdateProduct;
 use App\Infrastructure\CQRS\MessengerCommandBus;
 use App\Infrastructure\CQRS\MessengerQueryBus;
+use App\Infrastructure\Service\ResponseStatus;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +34,16 @@ class APIController extends AbstractController
      * @var MessengerQueryBus
      */
     private MessengerQueryBus $queryBus;
+    /**
+     * @var ResponseStatus
+     */
+    private ResponseStatus $status;
 
-    public function __construct(MessengerCommandBus $commandBus, MessengerQueryBus $queryBus)
+    public function __construct(MessengerCommandBus $commandBus, MessengerQueryBus $queryBus, ResponseStatus $status)
     {
         $this->commandBus = $commandBus;
         $this->queryBus   = $queryBus;
+        $this->status     = $status;
     }
 
     /**
@@ -44,12 +51,21 @@ class APIController extends AbstractController
      */
     public function edit(string $id, Request $request): Response
     {
-        $data          = json_decode($request->getContent(), true);
-        $updateCommand = new UpdateProduct($id);
-        $updateCommand->setName($data['name']);
-        $this->commandBus->dispatch($updateCommand);
+        $status = $this->status->nothingToDo();
+        $data   = json_decode($request->getContent(), true);
+        if (is_array($data) && array_key_exists('name', $data)) {
+            try {
+                $updateCommand = new UpdateProduct($id);
+                $updateCommand->setName($data['name']);
+                $this->commandBus->dispatch($updateCommand);
+                $status = $this->status->ok();
+            } catch (Exception $exception) {
+                $status = $this->status->error($exception);
+            }
+        }
 
-        return $this->json(['id' => $id]);
+        return $this->json(['id' => $id, 'status' => $status]);
+
     }
 
     /**
@@ -57,10 +73,17 @@ class APIController extends AbstractController
      */
     public function index(): Response
     {
-        $query    = new ListAllProductsQuery();
-        $products = $this->queryBus->handle($query);
+        $status   = $this->status->nothingToDo();
+        $products = [];
+        try {
+            $query    = new ListAllProductsQuery();
+            $products = $this->queryBus->handle($query);
+            $status   = $this->status->ok();
+        } catch (Exception $exception) {
+            $status = $this->status->error($exception);
+        }
 
-        return $this->json(['products' => $products]);
+        return $this->json(['products' => $products, 'status' => $status]);
     }
 
     /**
@@ -68,14 +91,20 @@ class APIController extends AbstractController
      */
     public function filter(string $id, Request $request): Response
     {
+        $status   = $this->status->nothingToDo();
         $products = [];
         $data     = json_decode($request->getContent(), true);
         if (is_array($data)) {
-            $query    = new FilterProductQuery($data);
-            $products = $this->queryBus->handle($query);
+            try {
+                $query    = new FilterProductQuery($data);
+                $products = $this->queryBus->handle($query);
+                $status   = $this->status->ok();
+            } catch (Exception $exception) {
+                $status = $this->status->error($exception);
+            }
         }
 
-        return $this->json(['products' => $products]);
+        return $this->json(['products' => $products, 'status' => $status]);
     }
 
     /**
@@ -83,10 +112,16 @@ class APIController extends AbstractController
      */
     public function events(string $id): Response
     {
-        $query   = new ListEventsQuery($id);
-        $product = $this->queryBus->handle($query);
+        $status = $this->status->nothingToDo();
+        try {
+            $query   = new ListEventsQuery($id);
+            $product = $this->queryBus->handle($query);
+            $status  = $this->status->ok();
+        } catch (Exception $exception) {
+            $status = $this->status->error($exception);
+        }
 
-        return $this->json(['products' => $product]);
+        return $this->json(['products' => $product, 'status' => $status]);
     }
 
     /**
@@ -94,11 +129,17 @@ class APIController extends AbstractController
      */
     public function add(Request $request): Response
     {
-        $data          = json_decode($request->getContent(), true);
-        $uuid          = Uuid::v4()->toRfc4122();
-        $createProduct = new CreateProduct($uuid, $data['name']);
-        $this->commandBus->dispatch($createProduct);
+        $status = $this->status->nothingToDo();
+        try {
+            $data          = json_decode($request->getContent(), true);
+            $uuid          = Uuid::v4()->toRfc4122();
+            $createProduct = new CreateProduct($uuid, $data['name']);
+            $this->commandBus->dispatch($createProduct);
+            $status = $this->status->ok();
+        } catch (Exception $exception) {
+            $status = $this->status->error($exception);
+        }
 
-        return $this->json(['id' => $uuid]);
+        return $this->json(['id' => $uuid, 'status' => $status]);
     }
 }
