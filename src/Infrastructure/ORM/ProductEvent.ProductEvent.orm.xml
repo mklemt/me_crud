@@ -12,9 +12,9 @@
         <embedded name="productStatus" class="App\Domain\Model\Status"/>
         <embedded name="eventTime" class="App\Domain\Model\AppDateTime"/>
 
-        <many-to-one field="product" target-entity="App\Domain\Model\Product\Product" inversed-by="events">
-            <join-column name="productId_uuid" referenced-column-name="productId_uuid" unique="false"/>
-        </many-to-one>
+<!--        <many-to-one field="product" target-entity="App\Domain\Model\Product\Product" inversed-by="events">-->
+<!--            <join-column name="productId_uuid" referenced-column-name="productId_uuid" unique="false"/>-->
+<!--        </many-to-one>-->
 
     </entity>
 </doctrine-mapping>
