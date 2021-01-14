@@ -9,8 +9,6 @@ use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\ProductEvent\ProductEvent;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 class Product
 {
@@ -23,7 +21,7 @@ class Product
      */
     private Status $currentStatus;
     private AppDateTime $createdDate;
-    private Collection $events;
+    private array $events;
     private ProductName $productName;
 
     private function __construct(Identifier $productId, ProductName $name, AppDateTime $createdDate, Status $status)
@@ -32,7 +30,7 @@ class Product
         $this->currentStatus = $status;
         $this->createdDate   = $createdDate;
         $this->productName   = $name;
-        $this->events        = new ArrayCollection();
+        $this->events        = [];
     }
 
     public static function create(string $uuid, ProductName $nazwa): self
@@ -49,8 +47,6 @@ class Product
     {
         $product = new self($uuid, $nazwa, $createdDate, $lastStatus);
 
-//        $product->events = ProductEvent::buildEventsFromArray($events);
-
         return $product;
     }
 
@@ -60,6 +56,7 @@ class Product
         if ($currentStatus == STATUS::CREATED) {
             StatusDomainException::productAlreadyHasCreatedStatus();
         }
+        $this->currentStatus = Status::create($currentStatus);
         $this->addEvent($currentStatus);
     }
 
@@ -70,7 +67,7 @@ class Product
     }
 
 
-    public function getEvents(): Collection
+    public function getEvents(): array
     {
         return $this->events;
     }
@@ -106,21 +103,23 @@ class Product
         $this->events[] = new ProductEvent($this->productId->asString(), $statusObject, $date);
     }
 
-    public function setEvents(array $productEvents)
+    public function setEvents($events)
     {
-//        $this->events = ProductEvent::buildEventsFromArray($productEvents);
+        $this->events = ProductEvent::buildEventsFromArray($events);
     }
 
     public function toArray()
     {
 
-        return [
+        $list = [
             'productId'     => $this->productId(),
             'productName'   => $this->productName->value(),
             'currentStatus' => $this->currentStatus->statusAsString(),
             'createdDate'   => $this->createdTime()->toString(),
-            'events'        => $this->getEvents(),
+            'events'        => ProductEvent::convertEventsToArray($this->getEvents()),
         ];
+
+        return $list;
 
     }
 

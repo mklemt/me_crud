@@ -24,40 +24,33 @@ class ProductTest extends TestCase
         $this->assertCount(2, $product->getEvents());
     }
 
-//    public function testCanBuildProduct()
-//    {
-//        $uuid = Uuid::v4()->toRfc4122();
-//        $id   = Identifier::fromString($uuid);
-//        $name = ProductName::create("Siłownik kategoria I");
-//
-//        $events[] = new ProductEvent($id, Status::create(Status::CREATED), AppDateTime::now());
-//        $events[] = new ProductEvent($id, Status::create(Status::UPDATED), AppDateTime::now());
-//        $events[] = new ProductEvent($id, Status::create(Status::WORKING), AppDateTime::now());
-//        $events[] = new ProductEvent($id, Status::create(Status::REMOVED), AppDateTime::now());
-//
-//        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
-//        $this->assertCount(4, $product->getEvents());
-//    }
+    public function testCanBuildProduct()
+    {
+        $uuid = Uuid::v4()->toRfc4122();
+        $id   = Identifier::fromString($uuid);
+        $name = ProductName::create("Siłownik kategoria I");
 
-//    public function testIfICanAddEventsToProduct()
-//    {
-//        $uuid = 'bfd3293b-19b2-4f17-8b64-40191e27ce65';
-//        $id   = Identifier::fromString($uuid);
-//        $name = ProductName::create("Siłownik kategoria I");
-//
-//        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
-//        $product->setCurrentStatus(Status::UPDATED);
-//        $product->setCurrentStatus(Status::WORKING);
-//        $product->setCurrentStatus(Status::REMOVED);
-//
-////        $events[] = new ProductEvent($id, Status::create(Status::CREATED), AppDateTime::now());
-////        $events[] = new ProductEvent($id, Status::create(Status::UPDATED), AppDateTime::now());
-////        $events[] = new ProductEvent($id, Status::create(Status::WORKING), AppDateTime::now());
-////        $events[] = new ProductEvent($id, Status::create(Status::REMOVED), AppDateTime::now());
-//
-////        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
-//        $this->assertCount(3, $product->getEvents());
-//    }
+        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
+        $product->setCurrentStatus(Status::UPDATED);
+        $product->setCurrentStatus(Status::WORKING);
+        $product->setCurrentStatus(Status::REMOVED);
+        $this->assertCount(3, $product->getEvents());
+    }
+
+    public function testIfICanAddEventsToProduct()
+    {
+        $uuid = 'bfd3293b-19b2-4f17-8b64-40191e27ce65';
+        $id   = Identifier::fromString($uuid);
+        $name = ProductName::create("Siłownik kategoria I");
+
+        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
+        $product->setCurrentStatus(Status::UPDATED);
+        $product->setCurrentStatus(Status::WORKING);
+        $product->setCurrentStatus(Status::REMOVED);
+
+        $product = Product::build($id, $name, Status::create(Status::UPDATED), AppDateTime::now());
+        $this->assertNotEmpty($product);
+    }
 
     public function testCanCreteProductFromFixtures()
     {

@@ -4,6 +4,7 @@
 namespace App\Application\UseCase\UpdateProduct;
 
 use App\Application\CQRS\CommandHandlerInterface;
+use App\Domain\Model\Product\Product;
 use App\Domain\Model\ProductName;
 use App\Domain\Model\Status;
 use App\Domain\Service\ProductService;
@@ -22,6 +23,7 @@ class UpdateProductHandler implements CommandHandlerInterface
 
     public function __invoke(UpdateProduct $command)
     {
+        /** @var Product $product */
         $product = $this->productService->getProduct($command->getUuid());
         if (empty($product)) {
             return;

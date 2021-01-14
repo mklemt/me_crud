@@ -8,7 +8,7 @@
             <generator strategy="IDENTITY"/>
         </id>
 
-        <field name="productId" type="string" unique="false" length="100" column="product_id"/>
+        <field name="productId" type="string" unique="false" length="100" column="productId"/>
         <embedded name="productStatus" class="App\Domain\Model\Status"/>
         <embedded name="eventTime" class="App\Domain\Model\AppDateTime"/>
 

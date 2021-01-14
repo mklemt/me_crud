@@ -7,8 +7,8 @@ use App\Domain\Model\Identifier\Identifier;
 use App\Domain\Model\Identifier\IdentifierFactoryInterface;
 use App\Domain\Model\Product\Product;
 use App\Domain\Model\Product\ProductRepositoryInterface;
-use App\Domain\Model\ProductEvent\ProductEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class DbalProductRepository implements ProductRepositoryInterface
 {
@@ -30,15 +30,25 @@ class DbalProductRepository implements ProductRepositoryInterface
     public function getById(string $uuid): ?Product
     {
         /** @var Product $product */
-        $product       = $this->entityManager->getRepository(Product::class)->find($uuid);
+        $product = $this->entityManager->getRepository(Product::class)->find($uuid);
+
         return $product;
     }
 
     public function save(Product $product): string
     {
-//        dd($product);
-        $this->entityManager->persist($product);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->beginTransaction();
+            $this->entityManager->persist($product);
+            foreach ($product->getEvents() as $productEvent) {
+                $this->entityManager->persist($productEvent);
+            }
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+        } catch (Exception $exception) {
+            $this->entityManager->rollback();
+        }
+
 
         return $product->productId();
     }

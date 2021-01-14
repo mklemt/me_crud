@@ -21,6 +21,7 @@ class ListAllProductsHandler implements QueryHandlerInterface
 
     public function __invoke(ListAllProductsQuery $query)
     {
+        $result   = [];
         $products = $this->productFinder->findAll();
         /** @var Product $product */
         foreach ($products as $product) {

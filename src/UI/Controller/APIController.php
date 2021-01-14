@@ -5,6 +5,7 @@ namespace App\UI\Controller;
 
 use App\Application\UseCase\CreateProduct\CreateProduct;
 use App\Application\UseCase\ListAllProducts\ListAllProductsQuery;
+use App\Application\UseCase\ListEvents\ListEventsQuery;
 use App\Application\UseCase\UpdateProduct\UpdateProduct;
 use App\Infrastructure\CQRS\MessengerCommandBus;
 use App\Infrastructure\CQRS\MessengerQueryBus;
@@ -53,7 +54,7 @@ class APIController extends AbstractController
      */
     public function index(): Response
     {
-        $query   = new ListAllProductsQuery();
+        $query    = new ListAllProductsQuery();
         $products = $this->queryBus->handle($query);
 
         return $this->json(['products' => $products]);
@@ -72,7 +73,10 @@ class APIController extends AbstractController
      */
     public function events(string $id): Response
     {
-        return $this->json(['id' => $id]);
+        $query    = new ListEventsQuery($id);
+        $product = $this->queryBus->handle($query);
+
+        return $this->json(['products' => $product]);
     }
 
     /**
